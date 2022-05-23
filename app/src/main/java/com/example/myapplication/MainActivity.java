@@ -77,8 +77,6 @@ public class MainActivity extends AppCompatActivity {
                     JSONArray jsonArray = jsonResponse.getJSONArray("items");
                     JSONObject jsonObjectWeather = jsonArray.getJSONObject(0);
                     String timestamp = jsonObjectWeather.getString("timestamp");
-
-
                     output += "Current time : " + timestamp;
 
                 } catch (JSONException e) {
