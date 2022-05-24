@@ -6,12 +6,12 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.menu.MenuView;
 import androidx.appcompat.widget.Toolbar;
 
 import com.android.volley.Request;
@@ -34,13 +34,12 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        region = findViewById(R.id.region);
-        result = findViewById(R.id.result);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar myToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
         myToolbar.inflateMenu(R.menu.menu_main);
+        MenuView.ItemView today = findViewById(R.id.today);
     }
 
     @Override
@@ -61,9 +60,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void getWeatherDetails(View view) {
+    public void getWeatherDetails(View view) { //Onclick for button in 'today' page to show weather data
         String tempUrl = "";
 //        String regionString = region.getText().toString().trim();
+        region = findViewById(R.id.region);
+        result = findViewById(R.id.result);
 
 //        tempUrl = url + "?q=" + region;
 
@@ -95,5 +96,12 @@ public class MainActivity extends AppCompatActivity {
         requestQueue.add(stringRequest);
     }
 
+    public void setFragmentToday(View view) {
+
+    }
+
+    public void setFragmentStatistics(View view) {
+
+    }
 
 }
