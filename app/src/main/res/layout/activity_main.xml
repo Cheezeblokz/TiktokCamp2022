@@ -45,19 +45,19 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
-                android:id="@+id/result"
-                android:layout_width="match_parent"
+                android:id="@+id/text_view_result"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="fill"
-                android:hint="Results" />
+                android:padding="16dp"
+                android:textSize="20sp"
+                android:textColor="@android:color/black"/>
 
         </ScrollView>
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/button_parse"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="getWeatherDetails"
             android:text="Get Weather"
             app:layout_constraintBottom_toTopOf="@+id/scrollView3"
             app:layout_constraintEnd_toEndOf="parent"

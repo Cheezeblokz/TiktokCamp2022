@@ -2,14 +2,11 @@ package com.example.myapplication;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.Spinner;
+import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -18,7 +15,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
@@ -27,20 +24,68 @@ import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {
 
-    Spinner region;
-    TextView result;
-
-    private final String url = "https://api.data.gov.sg/v1/environment/pm25";
+    //Spinner region;
+    //TextView result;
+    private TextView mTextViewResult;
+    private RequestQueue mQueue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        region = findViewById(R.id.region);
-        result = findViewById(R.id.result);
+
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        mTextViewResult = findViewById(R.id.text_view_result);
+        Button buttonParse = findViewById(R.id.button_parse);
+        mQueue = Volley.newRequestQueue(this);
+
+        buttonParse.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                jsonParse();
+            }
+        });
+
+        /*super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar myToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
-        myToolbar.inflateMenu(R.menu.menu_main);
+        myToolbar.inflateMenu(R.menu.menu_main);*/
+    }
+
+    private void jsonParse() {
+        String url = "https://api.data.gov.sg/v1/environment/pm25";
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            JSONArray jsonArray = response.getJSONArray("items");
+
+                            for (int i = 0;i < jsonArray.length(); i++){
+                                JSONObject airQuality = jsonArray.getJSONObject(i);
+
+                                String updatedTime = airQuality.getString("update_timestamp");
+                                String time = airQuality.getString("timestamp");
+                                //insert one more json object for readings
+                                /*JSONObject readings = airQuality.getJSONObject("pm25_one_hourly");
+                                int nationalPM = readings.getInt("national");*/
+
+                                mTextViewResult.append(updatedTime + ", " + time + "\n");
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        });
+
+        mQueue.add(request);
     }
 
     @Override
@@ -61,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void getWeatherDetails(View view) {
+    /*public void getWeatherDetails(View view) {
         String tempUrl = "";
 //        String regionString = region.getText().toString().trim();
 
@@ -93,7 +138,7 @@ public class MainActivity extends AppCompatActivity {
         });
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
         requestQueue.add(stringRequest);
-    }
+    }*/
 
 
 }
