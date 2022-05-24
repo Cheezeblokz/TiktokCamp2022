@@ -22,6 +22,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Method;
+
 public class MainActivity extends AppCompatActivity {
 
     //Spinner region;
@@ -46,11 +48,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        /*super.onCreate(savedInstanceState);
+        // debug: Previously the following lines were comments, resulting in the top menu not being
+        // displayed, so adjust the comment
+        //super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar myToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
-        myToolbar.inflateMenu(R.menu.menu_main);*/
+        myToolbar.inflateMenu(R.menu.menu_main);
     }
 
     private void jsonParse() {
@@ -94,12 +98,33 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    // feature: to enable menu icons display
+    @Override
+    public boolean onMenuOpened(int featureId, Menu menu) {
+        if (menu != null) {
+            if (menu.getClass().getSimpleName().equalsIgnoreCase("MenuBuilder")) {
+                try {
+                    Method method = menu.getClass().getDeclaredMethod("setOptionalIconsVisible", Boolean.TYPE);
+                    method.setAccessible(true);
+                    method.invoke(menu, true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return super.onMenuOpened(featureId, menu);
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()) {
             case R.id.action_settings:
                 Intent i = new Intent(this, SettingActivity.class);
                 startActivity(i);
+                return true;
+            case R.id.action_aboutPage:
+                Intent i2 = new Intent(this, AboutPageActivity.class);
+                startActivity(i2);
                 return true;
             default:
                 return true;
