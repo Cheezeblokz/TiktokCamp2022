@@ -70,4 +70,21 @@ public class TodayFragment extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_today, container, false);
     }
+
+    editText.addTextChangedListener(new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence c, int i, int i2, int i3) {
+        }
+
+        @Override
+        public void onTextChanged(CharSequence c, int i, int i2, int i3) {
+            if (c.length() > 0) {
+            } else {
+            }
+        }
+
+        @Override
+        public void afterTextChanged(Editable editable) {
+        }
+    });
 }
