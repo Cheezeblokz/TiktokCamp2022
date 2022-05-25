@@ -2,14 +2,17 @@ package com.example.myapplication;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.FragmentManager;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -26,10 +29,13 @@ import java.lang.reflect.Method;
 
 public class MainActivity extends AppCompatActivity {
 
-    //Spinner region;
-    //TextView result;
-    private TextView mTextViewResult;
-    private RequestQueue mQueue;
+    Spinner region;
+    TextView result;
+
+    //Comment: components shifted to SearchFragment
+//    private TextView mTextViewResult;
+//    private RequestQueue mQueue;
+//    private Button buttonParse;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,60 +43,68 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mTextViewResult = findViewById(R.id.text_view_result);
-        Button buttonParse = findViewById(R.id.button_parse);
-        mQueue = Volley.newRequestQueue(this);
+        //Attaching SearchFragment to FragmentContainer layout
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+                .add(R.id.fragment_container_view, SearchFragment.class, null)
+                .addToBackStack(null)
+                .commit();
 
-        buttonParse.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                jsonParse();
-            }
-        });
+        //Comment: shifted to SearchFragment
+//        mTextViewResult = findViewById(R.id.text_view_result);
+//        buttonParse = findViewById(R.id.button_parse);
+//        mQueue = Volley.newRequestQueue(this);
+//
+//        buttonParse.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                jsonParse();
+//            }
+//        });
 
         // debug: Previously the following lines were comments, resulting in the top menu not being
         // displayed, so adjust the comment
-        //super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        // Configuring Toolbar
         Toolbar myToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
         myToolbar.inflateMenu(R.menu.menu_main);
     }
 
-    private void jsonParse() {
-        String url = "https://api.data.gov.sg/v1/environment/pm25";
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            JSONArray jsonArray = response.getJSONArray("items");
-
-                            for (int i = 0;i < jsonArray.length(); i++){
-                                JSONObject airQuality = jsonArray.getJSONObject(i);
-
-                                String updatedTime = airQuality.getString("update_timestamp");
-                                String time = airQuality.getString("timestamp");
-                                //insert one more json object for readings
-                                /*JSONObject readings = airQuality.getJSONObject("pm25_one_hourly");
-                                int nationalPM = readings.getInt("national");*/
-
-                                mTextViewResult.append(updatedTime + ", " + time + "\n");
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
-            }
-        });
-
-        mQueue.add(request);
-    }
+//    private void jsonParse() {
+//        String url = "https://api.data.gov.sg/v1/environment/pm25";
+//        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
+//                new Response.Listener<JSONObject>() {
+//                    @Override
+//                    public void onResponse(JSONObject response) {
+//                        try {
+//                            JSONArray jsonArray = response.getJSONArray("items");
+//
+//
+//                            for (int i = 0;i < jsonArray.length(); i++){
+//                                JSONObject airQuality = jsonArray.getJSONObject(i);
+//
+//                                String updatedTime = airQuality.getString("update_timestamp");
+//                                String time = airQuality.getString("timestamp");
+//                                //insert one more json object for readings
+//                                /*JSONObject readings = airQuality.getJSONObject("pm25_one_hourly");
+//                                int nationalPM = readings.getInt("national");*/
+//
+//                                mTextViewResult.append(updatedTime + ", " + time + "\n");
+//                            }
+//                        } catch (JSONException e) {
+//                            e.printStackTrace();
+//                        }
+//
+//                    }
+//                }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//                error.printStackTrace();
+//            }
+//        });
+//
+//        mQueue.add(request);
+//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
@@ -115,6 +129,7 @@ public class MainActivity extends AppCompatActivity {
         return super.onMenuOpened(featureId, menu);
     }
 
+    // Handle selection action for menu items
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()) {
@@ -131,6 +146,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    //Comment: function for data extraction for reference
     /*public void getWeatherDetails(View view) {
         String tempUrl = "";
 //        String regionString = region.getText().toString().trim();
