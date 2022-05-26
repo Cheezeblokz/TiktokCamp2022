@@ -31,6 +31,7 @@ public class TodayFragment extends Fragment {
 
     public TodayFragment() {
         // Required empty public constructor
+        super(R.layout.fragment_today);
     }
 
     /**
@@ -90,6 +91,6 @@ public class TodayFragment extends Fragment {
         public void afterTextChanged(Editable editable) {
         }
     });
-    
+
      */
 }
