@@ -20,6 +20,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationBarView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -27,7 +30,7 @@ import org.json.JSONObject;
 
 import java.lang.reflect.Method;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnItemSelectedListener{
 
     Spinner region;
     TextView result;
@@ -49,10 +52,6 @@ public class MainActivity extends AppCompatActivity {
                 .add(R.id.fragment_container_view, SearchFragment.class, null)
                 .addToBackStack(null)
                 .commit();
-        fragmentManager.beginTransaction()
-                .add(R.id.fragment_container_view, TodayFragment.class, null)
-                .addToBackStack(null)
-                .commit();
         //Comment: shifted to SearchFragment
 //        mTextViewResult = findViewById(R.id.text_view_result);
 //        buttonParse = findViewById(R.id.button_parse);
@@ -71,6 +70,10 @@ public class MainActivity extends AppCompatActivity {
         Toolbar myToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
         myToolbar.inflateMenu(R.menu.menu_main);
+
+        BottomNavigationView myBottomNavigationView = findViewById(R.id.bottomNavigationView);
+        //myBottomNavigationView.inflateMenu(R.menu.my_navigation_items); don't inflate twice
+        myBottomNavigationView.setOnItemSelectedListener(this);
     }
 
 //    private void jsonParse() {
@@ -137,12 +140,12 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()) {
             case R.id.action_settings:
-                Intent i = new Intent(this, SettingActivity.class);
-                startActivity(i);
+                Intent intentToSetting = new Intent(this, SettingActivity.class);
+                startActivity(intentToSetting);
                 return true;
             case R.id.action_aboutPage:
-                Intent i2 = new Intent(this, AboutPageActivity.class);
-                startActivity(i2);
+                Intent intentToAboutPage = new Intent(this, AboutPageActivity.class);
+                startActivity(intentToAboutPage);
                 return true;
             default:
                 return true;
@@ -184,5 +187,25 @@ public class MainActivity extends AppCompatActivity {
         requestQueue.add(stringRequest);
     }*/
 
-
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        switch (item.getItemId()) {
+            case (R.id.item_search):
+                fragmentManager.beginTransaction()
+                        .add(R.id.fragment_container_view, SearchFragment.class, null)
+                        .addToBackStack(null)
+                        .commit();
+                break;
+            case (R.id.item_today):
+                fragmentManager.beginTransaction()
+                        .add(R.id.fragment_container_view, TodayFragment.class, null)
+                        .addToBackStack(null)
+                        .commit();
+                break;
+            default:
+                break;
+        }
+        return true;
+    }
 }
