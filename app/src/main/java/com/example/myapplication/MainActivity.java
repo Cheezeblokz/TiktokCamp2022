@@ -5,9 +5,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -21,8 +18,6 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -35,9 +30,6 @@ import org.json.JSONObject;
 import java.lang.reflect.Method;
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnItemSelectedListener{
-
-    Spinner region;
-    TextView result;
 
     //Comment: components shifted to SearchFragment
 //    private TextView mTextViewResult;
@@ -59,33 +51,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         //Comment: shifted to SearchFragment
 //        mTextViewResult = findViewById(R.id.text_view_result);
 //        buttonParse = findViewById(R.id.button_parse);
-//        mQueue = Volley.newRequestQueue(this);
-//
-//        buttonParse.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                jsonParse();
-//            }
-//        });
-
-        // debug: Previously the following lines were comments, resulting in the top menu not being
-        // displayed, so adjust the comment
-        // Configuring Toolbar
-        etRegion = findViewById(R.id.etRegion);
-        etDate = findViewById(R.id.etDate);
-        tvResult = findViewById(R.id.tvResult);
-
-        //Attaching SearchFragment to FragmentContainer layout
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction()
-                .add(R.id.fragment_container_view, SearchFragment.class, null)
-                .addToBackStack(null)
-                .commit();
-
-        //Comment: shifted to SearchFragment
-//        mTextViewResult = findViewById(R.id.text_view_result);
-//        buttonParse = findViewById(R.id.button_parse);
-//        mQueue = Volley.newRequestQueue(this);
+//        mQueue requestQueue = Volley.newRequestQueue(this);
 //
 //        buttonParse.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -151,25 +117,25 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     TextView tvResult;
     private final String url = "https://api.data.gov.sg/v1/environment/pm25";
 
-    public void getWeatherDetails(View view) {
+    public void getWeatherDetails(EditText etRegion, EditText etDate, TextView tvResult) {
         String tempUrl = "";
         String region = etRegion.getText().toString().trim();
         String date = etDate.getText().toString().trim();
-        if (region.equals("")) {
-            tvResult.setText("Region field can not be empty!");
-        } else {
-            if (!date.equals("")) {
-                tempUrl = url + "?q=" + region + "," + date;
-            } else {
-                tempUrl = url + "?q=" + region;
-            }
+//        if (region.equals("")) {
+//            tvResult.setText("Region field can not be empty!");
+//        } else {
+//            if (!date.equals("")) {
+//                tempUrl = url + "?q=" + region + "," + date;
+//            } else {
+//                tempUrl = url + "?q=" + region;
+//            }
             StringRequest stringRequest = new StringRequest(Request.Method.POST, tempUrl, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
                     //Log.d("response", response);
                     try {
-                        JSONArray jsonArray = response.getJSONArray("items");
-
+                        JSONObject jsonObject = new JSONObject(response);
+                        JSONArray jsonArray = jsonObject.getJSONArray("items");
 
                             for (int i = 0;i < jsonArray.length(); i++) {
                                 JSONObject airQuality = jsonArray.getJSONObject(i);
@@ -183,7 +149,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                                 String west = jsonObjectpm25.getString("west");
                                 String central = jsonObjectpm25.getString("central");
 
-                                mTextViewResult.append(national + ", " + "\n"
+                                tvResult.append(national + ", " + "\n"
                                         + north + ", " + "\n"
                                         + south + ", " + "\n"
                                         + east + ", " + "\n"
@@ -203,30 +169,23 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             });
             RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
             requestQueue.add(stringRequest);
-        }
+//        }
     }
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), error.toString().trim(), Toast.LENGTH_SHORT).show();
-            }
-        });
-        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-        requestQueue.add(stringRequest);
-    }*/
 
+    //Configure actions for selecting menu items in navigation bar
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         switch (item.getItemId()) {
             case (R.id.item_search):
                 fragmentManager.beginTransaction()
-                        .add(R.id.fragment_container_view, SearchFragment.class, null)
+                        .replace(R.id.fragment_container_view, SearchFragment.class, null)
                         .addToBackStack(null)
                         .commit();
                 break;
             case (R.id.item_today):
                 fragmentManager.beginTransaction()
-                        .add(R.id.fragment_container_view, TodayFragment.class, null)
+                        .replace(R.id.fragment_container_view, TodayFragment.class, null)
                         .addToBackStack(null)
                         .commit();
                 break;
