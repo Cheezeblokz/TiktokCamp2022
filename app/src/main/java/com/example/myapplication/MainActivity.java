@@ -1,5 +1,6 @@
 package com.example.myapplication;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,9 +20,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationBarView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -115,12 +114,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     //Comment: function for data extraction for reference
     EditText etRegion, etDate;
     TextView tvResult;
-    private final String url = "https://api.data.gov.sg/v1/environment/pm25";
+    private static final String url = "https://api.data.gov.sg/v1/environment/pm25";
 
-    public void getWeatherDetails(EditText etRegion, EditText etDate, TextView tvResult) {
+    public static void getWeatherDetails(Context context, String region, String date, TextView tvResult) {
         String tempUrl = "";
-        String region = etRegion.getText().toString().trim();
-        String date = etDate.getText().toString().trim();
 //        if (region.equals("")) {
 //            tvResult.setText("Region field can not be empty!");
 //        } else {
@@ -129,10 +126,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 //            } else {
 //                tempUrl = url + "?q=" + region;
 //            }
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, tempUrl, new Response.Listener<String>() {
+            StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
-                    //Log.d("response", response);
+                    Log.d("response", response);
                     try {
                         JSONObject jsonObject = new JSONObject(response);
                         JSONArray jsonArray = jsonObject.getJSONArray("items");
@@ -142,15 +139,14 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
                                 JSONObject jsonObjectReadings = airQuality.getJSONObject("readings");
                                 JSONObject jsonObjectpm25 = jsonObjectReadings.getJSONObject("pm25_one_hourly");
-                                String national = jsonObjectpm25.getString("National");
+//                                String national = jsonObjectpm25.getString("National"); //Doesn't appear in JSON data
                                 String north = jsonObjectpm25.getString("north");
                                 String south = jsonObjectpm25.getString("south");
                                 String east = jsonObjectpm25.getString("east");
                                 String west = jsonObjectpm25.getString("west");
                                 String central = jsonObjectpm25.getString("central");
 
-                                tvResult.append(national + ", " + "\n"
-                                        + north + ", " + "\n"
+                                tvResult.append(north + ", " + "\n"
                                         + south + ", " + "\n"
                                         + east + ", " + "\n"
                                         + west + ", " + "\n"
@@ -164,10 +160,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(getApplicationContext(), error.toString().trim(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, error.toString().trim(), Toast.LENGTH_SHORT).show();
                 }
             });
-            RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+            RequestQueue requestQueue = Volley.newRequestQueue(context);
             requestQueue.add(stringRequest);
 //        }
     }

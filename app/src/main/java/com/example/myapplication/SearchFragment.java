@@ -1,6 +1,7 @@
 package com.example.myapplication;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,50 +34,51 @@ public class SearchFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_search, null);
         mTextViewResult = v.findViewById(R.id.text_view_result);
         buttonParse = v.findViewById(R.id.button_parse);
-        mQueue = Volley.newRequestQueue(this.getContext());
+//        mQueue = Volley.newRequestQueue(this.getContext());
 
         buttonParse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                jsonParse();
+                Log.d("asdf", "asdf");
+                MainActivity.getWeatherDetails(getContext(), "region", "date", mTextViewResult);
             }
         });
 
         return v;
     }
 
-    private void jsonParse() {
-        String url = "https://api.data.gov.sg/v1/environment/pm25";
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            JSONArray jsonArray = response.getJSONArray("items");
-
-                            for (int i = 0;i < jsonArray.length(); i++){
-                                JSONObject airQuality = jsonArray.getJSONObject(i);
-
-                                String updatedTime = airQuality.getString("update_timestamp");
-                                String time = airQuality.getString("timestamp");
-                                //insert one more json object for readings
-                                /*JSONObject readings = airQuality.getJSONObject("pm25_one_hourly");
-                                int nationalPM = readings.getInt("national");*/
-
-                                mTextViewResult.append(updatedTime + ", " + time + "\n");
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
-            }
-        });
-
-        mQueue.add(request);
-    }
+//    private void jsonParse() {
+//        String url = "https://api.data.gov.sg/v1/environment/pm25";
+//        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
+//                new Response.Listener<JSONObject>() {
+//                    @Override
+//                    public void onResponse(JSONObject response) {
+//                        try {
+//                            JSONArray jsonArray = response.getJSONArray("items");
+//
+//                            for (int i = 0;i < jsonArray.length(); i++){
+//                                JSONObject airQuality = jsonArray.getJSONObject(i);
+//
+//                                String updatedTime = airQuality.getString("update_timestamp");
+//                                String time = airQuality.getString("timestamp");
+//                                //insert one more json object for readings
+//                                /*JSONObject readings = airQuality.getJSONObject("pm25_one_hourly");
+//                                int nationalPM = readings.getInt("national");*/
+//
+//                                mTextViewResult.append(updatedTime + ", " + time + "\n");
+//                            }
+//                        } catch (JSONException e) {
+//                            e.printStackTrace();
+//                        }
+//
+//                    }
+//                }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//                error.printStackTrace();
+//            }
+//        });
+//
+//        mQueue.add(request);
+//    }
 }
