@@ -36,7 +36,8 @@
         <activity
             android:name=".SettingActivity"
             android:exported="true"
-            android:label="Settings" />
+            android:label="Settings"
+            android:launchMode="singleInstance"/>
     </application>
 
 </manifest>
