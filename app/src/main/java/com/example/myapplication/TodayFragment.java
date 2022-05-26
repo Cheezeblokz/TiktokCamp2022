@@ -7,6 +7,9 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -61,7 +64,6 @@ public class TodayFragment extends Fragment {
             time = getArguments().getString(ARG_PARAM2);
             pm25 = getArguments().getString(ARG_PARAM3);
         }
-
     }
 
     @Override
@@ -71,6 +73,7 @@ public class TodayFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_today, container, false);
     }
 
+    /*
     editText.addTextChangedListener(new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence c, int i, int i2, int i3) {
@@ -87,4 +90,6 @@ public class TodayFragment extends Fragment {
         public void afterTextChanged(Editable editable) {
         }
     });
+    
+     */
 }
