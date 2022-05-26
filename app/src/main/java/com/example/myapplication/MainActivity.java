@@ -49,7 +49,10 @@ public class MainActivity extends AppCompatActivity {
                 .add(R.id.fragment_container_view, SearchFragment.class, null)
                 .addToBackStack(null)
                 .commit();
-
+        fragmentManager.beginTransaction()
+                .add(R.id.fragment_container_view, TodayFragment.class, null)
+                .addToBackStack(null)
+                .commit();
         //Comment: shifted to SearchFragment
 //        mTextViewResult = findViewById(R.id.text_view_result);
 //        buttonParse = findViewById(R.id.button_parse);
