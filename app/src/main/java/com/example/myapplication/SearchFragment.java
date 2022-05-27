@@ -24,7 +24,7 @@ public class SearchFragment extends Fragment {
         buttonParse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MainActivity.getWeatherDetails(getContext(), "region", "date", mTextViewResult);
+                MainActivity.getWeatherDetails(getContext(), "region", MainActivity.UrlGenerator("20220101",""), mTextViewResult);
             }
         });
         return v;
