@@ -41,12 +41,34 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         //Attaching SearchFragment to FragmentContainer layout
+        //Hongyi: the following might make switching between fragments very tedious
+        /*
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
                 .add(R.id.fragment_container_view, SearchFragment.class, null)
                 .addToBackStack(null)
                 .commit();
+        fragmentManager.beginTransaction()
+                .add(R.id.fragment_container_view, TodayFragment.class, null)
+                .addToBackStack(null)
+                .commit();
+         */
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+                .add(R.id.fragment_container_view, SearchFragment.class, null)
+                .addToBackStack(null)
+                .commit();
+        fragmentManager.beginTransaction()
+                .add(R.id.fragment_container_view, TodayFragment.class, null)
+                .addToBackStack(null)
+                .commit();
+        fragmentManager.beginTransaction()
+                .detach(TodayFragment.class.getSimpleName())
+                .commit();
+
         //Comment: shifted to SearchFragment
 //        mTextViewResult = findViewById(R.id.text_view_result);
 //        buttonParse = findViewById(R.id.button_parse);
