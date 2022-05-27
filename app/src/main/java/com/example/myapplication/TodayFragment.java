@@ -7,9 +7,12 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
+import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -17,6 +20,8 @@ import androidx.appcompat.app.AppCompatActivity;
  * create an instance of this fragment.
  */
 public class TodayFragment extends Fragment {
+
+    CompletableFuture<Void> ticking;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -72,6 +77,32 @@ public class TodayFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_today, container, false);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        TextView txtDate = (TextView) getView().findViewById(R.id.txtDate);
+        TextView txtTitle = (TextView) getView().findViewById(R.id.txtTitle);
+        TextView txtTime = (TextView) getView().findViewById(R.id.txtTime);
+        TextView txtPM25 = (TextView) getView().findViewById(R.id.txtPM25);
+
+        //Updates the current local time every second concurrently
+        ticking = CompletableFuture.runAsync(() -> {
+            while (true) {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException ex) {
+                    System.out.println(ex.getMessage() + " - TodayFragment.java");
+                }
+                String timeString = "Current Time: " + LocalTime.now().toString().substring(0, 8);
+                txtDate.setText(timeString);
+            }
+        }).handle((Void, ex) -> {
+            System.out.println("Failed Completable Future - TodayFragment.java: " + ex.getMessage());
+            return Void;
+        });
+
     }
 
     /*

@@ -29,7 +29,7 @@ import org.json.JSONObject;
 
 import java.lang.reflect.Method;
 
-public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnItemSelectedListener{
+public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnItemSelectedListener {
 
     //Comment: components shifted to SearchFragment
 //    private TextView mTextViewResult;
@@ -60,6 +60,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 .commit();
          */
 
+        //Intiates the two fragments
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction ft = fragmentManager.beginTransaction();
         ft.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out)
