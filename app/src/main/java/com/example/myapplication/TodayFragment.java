@@ -14,6 +14,7 @@ import org.json.JSONObject;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Random;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -115,8 +116,14 @@ public class TodayFragment extends Fragment {
         time = time.substring(0,2) + time.substring(3,5) + time.substring(6, 8);
         String targetURL = MainActivity.UrlGenerator(date, time);
 
-
         txtPM25.setText("300");
+        String region = "North";
+        String pm25Reading = MainActivity.getWeatherDetails(getContext(), region, MainActivity.UrlGenerator(date, time));
+        txtPM25.setText(pm25Reading);
+
+        //The url seems not responding, this is just a dummy reading
+        Random rnd = new Random(LocalTime.now().toNanoOfDay());
+        txtPM25.setText(String.format("%.2f", rnd.nextDouble() * 100));
     }
 
     //Stops the ticking to save memory when this fragment loses focus

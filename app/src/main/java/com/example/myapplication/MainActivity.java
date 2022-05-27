@@ -253,6 +253,56 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             //requestQueue.
     }
 
+    //another version of getWeatherDetails
+    public static String getWeatherDetails(Context context, String region, String url) {
+        //Comment: resets the TextView
+        String[] output = new String[1];
+
+        //Extract readings from url
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.d("response", response);
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    JSONArray jsonArray = jsonObject.getJSONArray("items");
+
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject airQuality = jsonArray.getJSONObject(i);
+
+                        JSONObject jsonObjectReadings = airQuality.getJSONObject("readings");
+                        JSONObject jsonObjectpm25 = jsonObjectReadings.getJSONObject("pm25_one_hourly");
+                        String timestamp = airQuality.getString("timestamp").substring(0, 19);
+
+                        if (region.equals("North") || region.equals("South") || region.equals("West") || region.equals("East") || region.equals("Central")) {
+                            String temp = jsonObjectpm25.getString(region.toLowerCase());
+                            output[0] = temp;
+                        } else if(region.equals("All")) {
+                            String north = jsonObjectpm25.getString("north");
+                            String south = jsonObjectpm25.getString("south");
+                            String east = jsonObjectpm25.getString("east");
+                            String west = jsonObjectpm25.getString("west");
+                            String central = jsonObjectpm25.getString("central");
+
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(context, error.toString().trim(), Toast.LENGTH_SHORT).show();
+            }
+        });
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        requestQueue.add(stringRequest);
+        //requestQueue.
+        return output[0];
+    }
+
     //Configure actions for selecting menu items in navigation bar
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
