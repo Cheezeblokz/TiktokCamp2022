@@ -141,17 +141,11 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     TextView tvResult;
     private static final String url = "https://api.data.gov.sg/v1/environment/pm25";
 
+    //region is a stub for now
     public static void getWeatherDetails(Context context, String region, String date, TextView tvResult) {
-        String tempUrl = "";
-//        if (region.equals("")) {
-//            tvResult.setText("Region field can not be empty!");
-//        } else {
-//            if (!date.equals("")) {
-//                tempUrl = url + "?q=" + region + "," + date;
-//            } else {
-//                tempUrl = url + "?q=" + region;
-//            }
-            StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+        String tempUrl = url + "?date_time=" + date.substring(-1, 12) + "%3A" + date.substring(13, 15) + "%3A" +date.substring(16, 18);
+
+            StringRequest stringRequest = new StringRequest(Request.Method.GET, tempUrl, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
                     Log.d("response", response);
@@ -159,7 +153,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                         JSONObject jsonObject = new JSONObject(response);
                         JSONArray jsonArray = jsonObject.getJSONArray("items");
 
-                            for (int i = 0;i < jsonArray.length(); i++) {
+                            for (int i = 0; i < jsonArray.length(); i++) {
                                 JSONObject airQuality = jsonArray.getJSONObject(i);
 
                                 JSONObject jsonObjectReadings = airQuality.getJSONObject("readings");
@@ -171,11 +165,11 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                                 String west = jsonObjectpm25.getString("west");
                                 String central = jsonObjectpm25.getString("central");
 
-                                tvResult.append(north + ", " + "\n"
-                                        + south + ", " + "\n"
-                                        + east + ", " + "\n"
-                                        + west + ", " + "\n"
-                                        + central + "\n");
+                                tvResult.append("North :" + north + ", " + "\n"
+                                        + "South :" + south + ", " + "\n"
+                                        + "East :" + east + ", " + "\n"
+                                        + "West :" + west + ", " + "\n"
+                                        + "Central :" + central + "\n");
                             }
                     } catch (JSONException e) {
                         e.printStackTrace();
