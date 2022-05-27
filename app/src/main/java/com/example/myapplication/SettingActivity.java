@@ -47,8 +47,5 @@ public class SettingActivity extends AppCompatActivity {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
             }
         });
-
-        //Configure notification switch
-        SwitchMaterial notification = findViewById(R.id.notificationSwitch);
     }
 }
