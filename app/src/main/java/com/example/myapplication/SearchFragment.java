@@ -8,23 +8,25 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
-import java.util.Locale;
-
 public class SearchFragment extends Fragment {
 
     private TextView mTextViewResult;
     private Button buttonParse;
+    EditText dateTime;
+    //TextView tvResult;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_search, null);
         mTextViewResult = v.findViewById(R.id.text_view_result);
         buttonParse = v.findViewById(R.id.button_parse);
+        dateTime = (EditText) v.findViewById(R.id.etDate);
 
         //Configuring spinner and storing selection by user into String region
         String region = "north";
@@ -52,7 +54,6 @@ public class SearchFragment extends Fragment {
                 MainActivity.getWeatherDetails(getContext(), region, MainActivity.UrlGenerator("20220101",""), mTextViewResult);
             }
         });
-
         return v;
     }
 }
