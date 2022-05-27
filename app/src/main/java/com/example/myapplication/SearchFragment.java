@@ -57,6 +57,7 @@ public class SearchFragment extends Fragment {
         });*/
 
         //Configure button to show readings onClick
+        //Filter unrecognised date and time
         buttonParse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
