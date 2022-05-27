@@ -143,7 +143,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     //region is a stub for now
     public static void getWeatherDetails(Context context, String region, String date, TextView tvResult) {
-        String tempUrl = url + "?date_time=" + date.substring(-1, 12) + "%3A" + date.substring(13, 15) + "%3A" +date.substring(16, 18);
+        String tempUrl = url + "?date_time=" + date.substring(0, 13) + "%3A" + date.substring(14, 16) + "%3A" + date.substring(17, 19);
 
             StringRequest stringRequest = new StringRequest(Request.Method.GET, tempUrl, new Response.Listener<String>() {
                 @Override
