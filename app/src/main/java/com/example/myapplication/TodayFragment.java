@@ -9,8 +9,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import org.json.JSONObject;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -87,7 +90,7 @@ public class TodayFragment extends Fragment {
         TextView txtTime = (TextView) getView().findViewById(R.id.txtTime);
         TextView txtPM25 = (TextView) getView().findViewById(R.id.txtPM25);
 
-        txtTime.setText("Today's readings are: ");
+        txtTime.setText("Today's readings ");
         txtDate.setText(LocalDate.now().toString());
 
         //Updates the current local time every second concurrently
@@ -105,6 +108,15 @@ public class TodayFragment extends Fragment {
             System.out.println("Failed CompletableFuture - TodayFragment.java: " + ex.getMessage());
             return Void;
         });
+
+        String date = LocalDate.now().toString();
+        date = date.substring(0,4) + date.substring(5,7) + date.substring(8, 10);
+        String time = LocalTime.now().format(DateTimeFormatter.ISO_LOCAL_TIME);
+        time = time.substring(0,2) + time.substring(3,5) + time.substring(6, 8);
+        String targetURL = MainActivity.UrlGenerator(date, time);
+        String targetURL = MainActivity.UrlGenerator 
+
+        txtPM25.setText("PM2.5 Reading Now: ");
     }
 
     //Stops the ticking to save memory when this fragment loses focus

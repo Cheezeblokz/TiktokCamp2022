@@ -140,6 +140,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     EditText etRegion, etDate;
     TextView tvResult;
     private static final String url = "https://api.data.gov.sg/v1/environment/pm25";
+    //public static final String URL = "https://api.data.gov.sg/v1/environment/pm25";
 
     // input: date-string(format yyyymmdd, only 8 digits input acceptable)
     // input: time(format HHmmss, only 6 digits 000000-235959hrs, otherwise ignored the time)
@@ -269,7 +270,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             });
             RequestQueue requestQueue = Volley.newRequestQueue(context);
             requestQueue.add(stringRequest);
-//        }
     }
 
     //Configure actions for selecting menu items in navigation bar
