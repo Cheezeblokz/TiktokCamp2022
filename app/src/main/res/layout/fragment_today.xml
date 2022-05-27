@@ -15,8 +15,12 @@
         android:text="TextView"
         android:textAlignment="center"
         android:textSize="34sp"
-        tools:layout_editor_absoluteX="136dp"
-        tools:layout_editor_absoluteY="158dp" />
+        app:layout_constraintBottom_toTopOf="@+id/txtTime"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.827" />
 
     <TextView
         android:id="@+id/txtDate"
@@ -25,8 +29,12 @@
         android:text="TextView"
         android:textAlignment="center"
         android:textSize="20sp"
-        tools:layout_editor_absoluteX="164dp"
-        tools:layout_editor_absoluteY="227dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.406" />
 
     <TextView
         android:id="@+id/txtTime"
@@ -36,8 +44,12 @@
         android:text="Today's Readings: "
         android:textAlignment="center"
         android:textSize="20sp"
-        tools:layout_editor_absoluteX="71dp"
-        tools:layout_editor_absoluteY="265dp" />
+        app:layout_constraintBottom_toTopOf="@+id/txtDate"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
 
     <TextView
         android:id="@+id/txtPM25"
@@ -47,7 +59,10 @@
         android:text="TextView"
         android:textAlignment="center"
         android:textSize="60sp"
-        tools:layout_editor_absoluteX="53dp"
-        tools:layout_editor_absoluteY="309dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtDate"
+        app:layout_constraintVertical_bias="0.138" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

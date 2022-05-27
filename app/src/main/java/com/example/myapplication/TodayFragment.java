@@ -90,7 +90,7 @@ public class TodayFragment extends Fragment {
         TextView txtTime = (TextView) getView().findViewById(R.id.txtTime);
         TextView txtPM25 = (TextView) getView().findViewById(R.id.txtPM25);
 
-        txtTime.setText("Today's readings ");
+        txtTitle.setText("The Current PM 2.5:");
         txtDate.setText(LocalDate.now().toString());
 
         //Updates the current local time every second concurrently
@@ -116,7 +116,7 @@ public class TodayFragment extends Fragment {
         String targetURL = MainActivity.UrlGenerator(date, time);
 
 
-        txtPM25.setText("PM2.5 Reading Now: ");
+        txtPM25.setText("300");
     }
 
     //Stops the ticking to save memory when this fragment loses focus
