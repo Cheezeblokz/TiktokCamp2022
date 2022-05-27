@@ -256,6 +256,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                                         + "East: " + east + "\n"
                                         + "West: " + west + "\n"
                                         + "Central: " + central + "\n\n");
+
+
+
+
                             }
                     } catch (JSONException e) {
                         e.printStackTrace();

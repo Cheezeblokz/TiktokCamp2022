@@ -31,11 +31,11 @@ public class SearchFragment extends Fragment {
         //Configuring spinner and storing selection by user into String region
         String region = "north";
         String[] regions = {"North", "South", "East", "West", "Central"};
-        Spinner spinner = v.findViewById(R.id.region);
+        Spinner regSpinner = v.findViewById(R.id.region);
         ArrayAdapter aa = new ArrayAdapter(getContext(), R.layout.simple_spinner_item, regions);
         aa.setDropDownViewResource(R.layout.simple_spinner_item);
-        spinner.setAdapter(aa);
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        regSpinner.setAdapter(aa);
+        regSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String region = regions[position].toLowerCase();
@@ -51,7 +51,8 @@ public class SearchFragment extends Fragment {
         buttonParse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MainActivity.getWeatherDetails(getContext(), region, MainActivity.UrlGenerator("20220101",""), mTextViewResult);
+                MainActivity.getWeatherDetails(getContext(), regSpinner.getSelectedItem().toString()
+                        , MainActivity.UrlGenerator("20220101",""), mTextViewResult);
             }
         });
         return v;
