@@ -216,8 +216,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         return tempStr;
     }
 
-    public static void getWeatherDetails(Context context, String region, String date, TextView tvResult) {
-        String tempUrl = "";
+    public static void getWeatherDetails(Context context, String region, String url, TextView tvResult) {
+//        String tempUrl = "";
 //        if (region.equals("")) {
 //            tvResult.setText("Region field can not be empty!");
 //        } else {
@@ -226,6 +226,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 //            } else {
 //                tempUrl = url + "?q=" + region;
 //            }
+        //Comment: resets the TextView
+        tvResult.setText("");
+
+        //Extract readings from url
             StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
