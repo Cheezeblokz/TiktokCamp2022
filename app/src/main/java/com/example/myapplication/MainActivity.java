@@ -13,6 +13,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -34,6 +35,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 //    private TextView mTextViewResult;
 //    private RequestQueue mQueue;
 //    private Button buttonParse;
+
+    SearchFragment sf = new SearchFragment();
+    TodayFragment tf = new TodayFragment();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,16 +61,14 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
          */
 
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction()
-                .add(R.id.fragment_container_view, SearchFragment.class, null)
+        FragmentTransaction ft = fragmentManager.beginTransaction();
+        ft.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out)
+                .add(R.id.fragment_container_view, sf)
                 .addToBackStack(null)
-                .commit();
-        fragmentManager.beginTransaction()
-                .add(R.id.fragment_container_view, TodayFragment.class, null)
+                .add(R.id.fragment_container_view, tf)
                 .addToBackStack(null)
-                .commit();
-        fragmentManager.beginTransaction()
-                .detach(TodayFragment.class.getSimpleName())
+                .show(sf)
+                .hide(tf)
                 .commit();
 
         //Comment: shifted to SearchFragment
@@ -89,7 +91,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         myToolbar.inflateMenu(R.menu.menu_main);
 
         BottomNavigationView myBottomNavigationView = findViewById(R.id.bottomNavigationView);
-        //myBottomNavigationView.inflateMenu(R.menu.my_navigation_items); don't inflate twice
+        //myBottomNavigationView.inflateMenu(R.menu.my_navigation_items); //don't inflate twice
         myBottomNavigationView.setOnItemSelectedListener(this);
     }
 
@@ -197,14 +199,14 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         switch (item.getItemId()) {
             case (R.id.item_search):
                 fragmentManager.beginTransaction()
-                        .replace(R.id.fragment_container_view, SearchFragment.class, null)
-                        .addToBackStack(null)
+                        .hide(tf)
+                        .show(sf)
                         .commit();
                 break;
             case (R.id.item_today):
                 fragmentManager.beginTransaction()
-                        .replace(R.id.fragment_container_view, TodayFragment.class, null)
-                        .addToBackStack(null)
+                        .hide(sf)
+                        .show(tf)
                         .commit();
                 break;
             default:
