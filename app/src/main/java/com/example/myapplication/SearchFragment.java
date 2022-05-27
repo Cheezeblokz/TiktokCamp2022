@@ -46,16 +46,6 @@ public class SearchFragment extends Fragment {
             }
         });
 
-        //used to remove hints when input is present
-        /*dateTime.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus)
-                    dateTime.setHint("");
-                else
-                    dateTime.setHint("YYYY/MM/DD HH:MM:SS");
-            }
-        });*/
-
         //Configure button to show readings onClick
         //Filter unrecognised date and time
         buttonParse.setOnClickListener(new View.OnClickListener() {
@@ -63,14 +53,18 @@ public class SearchFragment extends Fragment {
             public void onClick(View v) {
                 String temp = dateTime.getText().toString();
                 if(temp.length() == 19 &&
-                        temp.substring(3,4) == "-" &&
-                        temp.substring(6,7) == "-" &&
-                        temp.substring(9,10) == "T" &&
-                        temp.substring(12,13) == ":" &&
-                        temp.substring(15,16) == ":"){
+                temp.charAt(4) == '/' &&
+                temp.charAt(7) == '/' &&
+                temp.charAt(10) == ' ' &&
+                temp.charAt(13) == ':' &&
+                temp.charAt(16) == ':'){
                     date = temp.substring(0, 4) + temp.substring(5, 7) + temp.substring(8, 10);
                     time = temp.substring(11, 13) + temp.substring(14, 16) + temp.substring(17, 19);
-                    MainActivity.getWeatherDetails(getContext(), region, MainActivity.UrlGenerator(date, time), mTextViewResult);
+                    if (MainActivity.UrlGenerator(date, time) != "") {
+                        MainActivity.getWeatherDetails(getContext(), region, MainActivity.UrlGenerator(date, time), mTextViewResult);
+                    }else{
+                        mTextViewResult.setText("Date & Time format not recognized!");
+                    }
                 }else if(temp.length() == 0){
                     mTextViewResult.setText("Please input Date & Time!");
                 }else{
