@@ -31,11 +31,6 @@ import java.lang.reflect.Method;
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnItemSelectedListener {
 
-    //Comment: components shifted to SearchFragment
-//    private TextView mTextViewResult;
-//    private RequestQueue mQueue;
-//    private Button buttonParse;
-
     SearchFragment sf = new SearchFragment();
     TodayFragment tf = new TodayFragment();
 
@@ -72,20 +67,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 .hide(tf)
                 .commit();
 
-        //Comment: shifted to SearchFragment
-//        mTextViewResult = findViewById(R.id.text_view_result);
-//        buttonParse = findViewById(R.id.button_parse);
-//        mQueue requestQueue = Volley.newRequestQueue(this);
-//
-//        buttonParse.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                jsonParse();
-//            }
-//        });
-
-        // debug: Previously the following lines were comments, resulting in the top menu not being
-        // displayed, so adjust the comment
         // Configuring Toolbar
         Toolbar myToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
@@ -217,15 +198,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     }
 
     public static void getWeatherDetails(Context context, String region, String url, TextView tvResult) {
-//        String tempUrl = "";
-//        if (region.equals("")) {
-//            tvResult.setText("Region field can not be empty!");
-//        } else {
-//            if (!date.equals("")) {
-//                tempUrl = url + "?q=" + region + "," + date;
-//            } else {
-//                tempUrl = url + "?q=" + region;
-//            }
         //Comment: resets the TextView
         tvResult.setText("");
 
@@ -243,23 +215,26 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
                                 JSONObject jsonObjectReadings = airQuality.getJSONObject("readings");
                                 JSONObject jsonObjectpm25 = jsonObjectReadings.getJSONObject("pm25_one_hourly");
-                                String updateTimestamp = airQuality.getString("update_timestamp");
-                                String north = jsonObjectpm25.getString("north");
-                                String south = jsonObjectpm25.getString("south");
-                                String east = jsonObjectpm25.getString("east");
-                                String west = jsonObjectpm25.getString("west");
-                                String central = jsonObjectpm25.getString("central");
+                                String timestamp = airQuality.getString("timestamp").substring(0, 19);
 
-                                tvResult.append("Update at " + updateTimestamp + "\n"
-                                        + "North: " + north + "\n"
-                                        + "South: " + south + "\n"
-                                        + "East: " + east + "\n"
-                                        + "West: " + west + "\n"
-                                        + "Central: " + central + "\n\n");
+                                if (region.equals("North") || region.equals("South") || region.equals("West") || region.equals("East") || region.equals("Central")) {
+                                    String temp = jsonObjectpm25.getString(region.toLowerCase());
+                                    tvResult.append("Update at " + timestamp + "\n"
+                                            + region + ": " + temp + "\n\n");
+                                }else if(region.equals("All")) {
+                                    String north = jsonObjectpm25.getString("north");
+                                    String south = jsonObjectpm25.getString("south");
+                                    String east = jsonObjectpm25.getString("east");
+                                    String west = jsonObjectpm25.getString("west");
+                                    String central = jsonObjectpm25.getString("central");
 
-
-
-
+                                    tvResult.append("Update at " + timestamp + "\n"
+                                            + "North: " + north + "\n"
+                                            + "South: " + south + "\n"
+                                            + "East: " + east + "\n"
+                                            + "West: " + west + "\n"
+                                            + "Central: " + central + "\n\n");
+                                }
                             }
                     } catch (JSONException e) {
                         e.printStackTrace();

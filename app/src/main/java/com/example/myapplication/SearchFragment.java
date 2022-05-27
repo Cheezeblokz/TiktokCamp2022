@@ -1,7 +1,6 @@
 package com.example.myapplication;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,8 +17,8 @@ public class SearchFragment extends Fragment {
 
     private TextView mTextViewResult;
     private Button buttonParse;
-    EditText dateTime;
-    //TextView tvResult;
+    private EditText dateTime;
+    private String date, time, region;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -29,16 +28,16 @@ public class SearchFragment extends Fragment {
         dateTime = (EditText) v.findViewById(R.id.etDate);
 
         //Configuring spinner and storing selection by user into String region
-        String region = "north";
-        String[] regions = {"North", "South", "East", "West", "Central"};
-        Spinner regSpinner = v.findViewById(R.id.region);
+        region = "All";
+        String[] regions = {"All", "North", "South", "East", "West", "Central"};
+        Spinner spinner = v.findViewById(R.id.region);
         ArrayAdapter aa = new ArrayAdapter(getContext(), R.layout.simple_spinner_item, regions);
         aa.setDropDownViewResource(R.layout.simple_spinner_item);
-        regSpinner.setAdapter(aa);
-        regSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        spinner.setAdapter(aa);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String region = regions[position].toLowerCase();
+                region = regions[position];
             }
 
             @Override
@@ -51,8 +50,16 @@ public class SearchFragment extends Fragment {
         buttonParse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MainActivity.getWeatherDetails(getContext(), regSpinner.getSelectedItem().toString()
-                        , MainActivity.UrlGenerator("20220101",""), mTextViewResult);
+                String temp = dateTime.getText().toString();
+                if(temp.length() == 19){
+                    date = temp.substring(0, 4) + temp.substring(5, 7) + temp.substring(8, 10);
+                    time = temp.substring(11, 13) + temp.substring(14, 16) + temp.substring(17, 19);
+                    MainActivity.getWeatherDetails(getContext(), region, MainActivity.UrlGenerator(date, time), mTextViewResult);
+                }else if(temp.length() == 0){
+                    mTextViewResult.setText("Please input Date & Time!");
+                }else{
+                    mTextViewResult.setText("Date & Time format not recognized!");
+                }
             }
         });
         return v;

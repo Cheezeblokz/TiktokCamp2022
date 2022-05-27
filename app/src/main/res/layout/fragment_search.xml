@@ -10,13 +10,11 @@
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="170dp"
+        android:layout_marginTop="180dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/text_view_result"
@@ -30,39 +28,66 @@
 
     <Button
         android:id="@+id/button_parse"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Get 2.5"
+        android:layout_width="140dp"
+        android:layout_height="100dp"
+        android:text="Get Readings"
         app:layout_constraintBottom_toTopOf="@+id/scrollView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.709"
-        app:layout_constraintStart_toEndOf="@+id/region"
+        app:layout_constraintHorizontal_bias="0.899"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.122" />
+        app:layout_constraintVertical_bias="0.511" />
 
     <Spinner
         android:id="@+id/region"
         android:layout_width="200dp"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:contentDescription="region"
         android:minHeight="48dp"
         app:layout_constraintBottom_toTopOf="@+id/scrollView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.127"
+        app:layout_constraintEnd_toStartOf="@+id/button_parse"
+        app:layout_constraintHorizontal_bias="0.4"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.126" />
+        app:layout_constraintVertical_bias="0.25" />
 
     <EditText
         android:id="@+id/etDate"
-        android:layout_width="391dp"
-        android:layout_height="61dp"
-        android:ems="10"
-        android:hint="Enter Date and Time (YYYY-MM-DD[T]HH:mm:ss)"
-        android:inputType="textPersonName"
+        android:layout_width="200dp"
+        android:layout_height="48dp"
+        android:hint="YYYY/MM/DD HH:MM:SS"
+        android:inputType="text"
+        android:textSize="14sp"
         app:layout_constraintBottom_toTopOf="@+id/scrollView"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="10dp" />
+        app:layout_constraintEnd_toStartOf="@+id/button_parse"
+        app:layout_constraintHorizontal_bias="0.409"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/region"
+        app:layout_constraintVertical_bias="0.843" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Select Region"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/region"
+        app:layout_constraintEnd_toStartOf="@+id/button_parse"
+        app:layout_constraintHorizontal_bias="0.113"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Enter Date &amp; Time\n(YYYY/MM/DD HH:MM:SS)"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/etDate"
+        app:layout_constraintEnd_toStartOf="@+id/button_parse"
+        app:layout_constraintHorizontal_bias="0.243"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
