@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -11,25 +12,42 @@
         android:id="@+id/txtTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView" />
+        android:text="TextView"
+        android:textAlignment="center"
+        android:textSize="34sp"
+        tools:layout_editor_absoluteX="136dp"
+        tools:layout_editor_absoluteY="158dp" />
 
     <TextView
         android:id="@+id/txtDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView" />
+        android:text="TextView"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        tools:layout_editor_absoluteX="164dp"
+        tools:layout_editor_absoluteY="227dp" />
 
     <TextView
         android:id="@+id/txtTime"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="268dp"
+        android:layout_height="32dp"
         android:editable="false"
-        android:text="Today's Readings: " />
+        android:text="Today's Readings: "
+        android:textAlignment="center"
+        android:textSize="20sp"
+        tools:layout_editor_absoluteX="71dp"
+        tools:layout_editor_absoluteY="265dp" />
 
     <TextView
         android:id="@+id/txtPM25"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView" />
+        android:fontFamily="@font/alfa_slab_one"
+        android:text="TextView"
+        android:textAlignment="center"
+        android:textSize="60sp"
+        tools:layout_editor_absoluteX="53dp"
+        tools:layout_editor_absoluteY="309dp" />
 
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

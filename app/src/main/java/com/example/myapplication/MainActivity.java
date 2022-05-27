@@ -250,6 +250,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             });
             RequestQueue requestQueue = Volley.newRequestQueue(context);
             requestQueue.add(stringRequest);
+            //requestQueue.
     }
 
     //Configure actions for selecting menu items in navigation bar

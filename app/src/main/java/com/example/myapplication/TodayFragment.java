@@ -114,7 +114,7 @@ public class TodayFragment extends Fragment {
         String time = LocalTime.now().format(DateTimeFormatter.ISO_LOCAL_TIME);
         time = time.substring(0,2) + time.substring(3,5) + time.substring(6, 8);
         String targetURL = MainActivity.UrlGenerator(date, time);
-        String targetURL = MainActivity.UrlGenerator 
+
 
         txtPM25.setText("PM2.5 Reading Now: ");
     }
