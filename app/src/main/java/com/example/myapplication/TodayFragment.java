@@ -9,9 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -79,13 +78,17 @@ public class TodayFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_today, container, false);
     }
 
+    //Sets the ticking when this fragment gets focus
     @Override
     public void onResume() {
         super.onResume();
-        TextView txtDate = (TextView) getView().findViewById(R.id.txtDate);
         TextView txtTitle = (TextView) getView().findViewById(R.id.txtTitle);
+        TextView txtDate = (TextView) getView().findViewById(R.id.txtDate);
         TextView txtTime = (TextView) getView().findViewById(R.id.txtTime);
         TextView txtPM25 = (TextView) getView().findViewById(R.id.txtPM25);
+
+        txtTime.setText("Today's readings are: ");
+        txtDate.setText(LocalDate.now().toString());
 
         //Updates the current local time every second concurrently
         ticking = CompletableFuture.runAsync(() -> {
@@ -96,13 +99,20 @@ public class TodayFragment extends Fragment {
                     System.out.println(ex.getMessage() + " - TodayFragment.java");
                 }
                 String timeString = "Current Time: " + LocalTime.now().toString().substring(0, 8);
-                txtDate.setText(timeString);
+                txtTime.setText(timeString);
             }
         }).handle((Void, ex) -> {
-            System.out.println("Failed Completable Future - TodayFragment.java: " + ex.getMessage());
+            System.out.println("Failed CompletableFuture - TodayFragment.java: " + ex.getMessage());
             return Void;
         });
+    }
 
+    //Stops the ticking to save memory when this fragment loses focus
+    @Override
+    public void onPause() {
+        super.onPause();
+        ticking.complete(null);
+        ticking = null;
     }
 
     /*

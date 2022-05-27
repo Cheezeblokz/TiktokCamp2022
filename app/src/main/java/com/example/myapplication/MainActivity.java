@@ -141,11 +141,96 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     TextView tvResult;
     private static final String url = "https://api.data.gov.sg/v1/environment/pm25";
 
-    //region is a stub for now
-    public static void getWeatherDetails(Context context, String region, String date, TextView tvResult) {
-        String tempUrl = url + "?date_time=" + date.substring(0, 13) + "%3A" + date.substring(14, 16) + "%3A" + date.substring(17, 19);
+    // input: date-string(format yyyymmdd, only 8 digits input acceptable)
+    // input: time(format HHmmss, only 6 digits 000000-235959hrs, otherwise ignored the time)
+    // output/return: the URL for request, only if the input is legal, else return a "" string
 
-            StringRequest stringRequest = new StringRequest(Request.Method.GET, tempUrl, new Response.Listener<String>() {
+    public static String UrlGenerator(String date, String time){
+        String tempStr = "";
+        tempStr += url;
+
+        // check the length of the date
+        if (date.length()!=8){
+            return "";
+        }
+
+        String year = date.substring(0,4);
+        String month = date.substring(4,6);
+        String day = date.substring(6,8);
+
+        // check the format of the date
+        if ( Integer.parseInt(month) > 12  || Integer.parseInt(month) < 1  ){
+            return "";
+        }
+        if (1 == Integer.parseInt(month) || 3 == Integer.parseInt(month) ||
+                5 == Integer.parseInt(month) || 7 == Integer.parseInt(month) ||
+                8 == Integer.parseInt(month) || 10 == Integer.parseInt(month) ||
+                12 == Integer.parseInt(month) ){
+            if ( Integer.parseInt(day) > 31  || Integer.parseInt(day) < 1  ){
+                return "";
+            }
+        }else if (4 == Integer.parseInt(month) || 6 == Integer.parseInt(month) ||
+                9 == Integer.parseInt(month) || 11 == Integer.parseInt(month)){
+            if ( Integer.parseInt(day) > 30  || Integer.parseInt(day) < 1  ){
+                return "";
+            }
+        }
+        else if (2 == Integer.parseInt(month)){
+            if (Integer.parseInt(year) % 4 == 0){
+                if ( Integer.parseInt(day) > 29  || Integer.parseInt(day) < 1  ){
+                    return "";
+                }
+            } else {
+                if ( Integer.parseInt(day) > 28  || Integer.parseInt(day) < 1  ){
+                    return "";
+                }
+            }
+        }
+
+
+        String new_date = year + "-" + month + "-" + day;
+
+
+        if (time.length() == 6){
+            String hour = time.substring(0,2);
+            String minute = time.substring(2,4);
+            String second = time.substring(4,6);
+
+            if (Integer.parseInt(hour) <= 23 && Integer.parseInt(hour) >= 0 &&
+                    Integer.parseInt(minute) <= 59 && Integer.parseInt(minute) >= 0 &&
+                    Integer.parseInt(second) <= 59 && Integer.parseInt(second) >= 0){
+                String new_time = hour + "%3A" + minute+ "%3A" + second;
+                // https://api.data.gov.sg/v1/environment/pm25?date_time=2022-03-27T11%3A22%3A33
+                tempStr += "?date_time=" +new_date + "T" + new_time;
+            } else {
+                // directly ignore the time input if the length is illegal
+                // https://api.data.gov.sg/v1/environment/pm25?date=2022-03-27
+                tempStr += "?date=" + new_date;
+            }
+        } else{
+            // directly ignore the time input if the time input is unformatted
+            // https://api.data.gov.sg/v1/environment/pm25?date=2022-03-27
+            tempStr += "?date=" + new_date;
+        }
+
+        return tempStr;
+    }
+
+    public static void getWeatherDetails(Context context, String region, String url, TextView tvResult) {
+//        String tempUrl = "";
+//        if (region.equals("")) {
+//            tvResult.setText("Region field can not be empty!");
+//        } else {
+//            if (!date.equals("")) {
+//                tempUrl = url + "?q=" + region + "," + date;
+//            } else {
+//                tempUrl = url + "?q=" + region;
+//            }
+        //Comment: resets the TextView
+        tvResult.setText("");
+
+        //Extract readings from url
+            StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
                     Log.d("response", response);
@@ -153,23 +238,24 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                         JSONObject jsonObject = new JSONObject(response);
                         JSONArray jsonArray = jsonObject.getJSONArray("items");
 
-                            for (int i = 0; i < jsonArray.length(); i++) {
+                            for (int i = 0;i < jsonArray.length(); i++) {
                                 JSONObject airQuality = jsonArray.getJSONObject(i);
 
                                 JSONObject jsonObjectReadings = airQuality.getJSONObject("readings");
                                 JSONObject jsonObjectpm25 = jsonObjectReadings.getJSONObject("pm25_one_hourly");
-//                                String national = jsonObjectpm25.getString("National"); //Doesn't appear in JSON data
+                                String updateTimestamp = airQuality.getString("update_timestamp");
                                 String north = jsonObjectpm25.getString("north");
                                 String south = jsonObjectpm25.getString("south");
                                 String east = jsonObjectpm25.getString("east");
                                 String west = jsonObjectpm25.getString("west");
                                 String central = jsonObjectpm25.getString("central");
 
-                                tvResult.append("North :" + north + ", " + "\n"
-                                        + "South :" + south + ", " + "\n"
-                                        + "East :" + east + ", " + "\n"
-                                        + "West :" + west + ", " + "\n"
-                                        + "Central :" + central + "\n");
+                                tvResult.append("Update at " + updateTimestamp + "\n"
+                                        + "North: " + north + "\n"
+                                        + "South: " + south + "\n"
+                                        + "East: " + east + "\n"
+                                        + "West: " + west + "\n"
+                                        + "Central: " + central + "\n\n");
                             }
                     } catch (JSONException e) {
                         e.printStackTrace();
