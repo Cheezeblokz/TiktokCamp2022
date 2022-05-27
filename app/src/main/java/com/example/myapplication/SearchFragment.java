@@ -46,12 +46,27 @@ public class SearchFragment extends Fragment {
             }
         });
 
+        //used to remove hints when input is present
+        /*dateTime.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus)
+                    dateTime.setHint("");
+                else
+                    dateTime.setHint("YYYY/MM/DD HH:MM:SS");
+            }
+        });*/
+
         //Configure button to show readings onClick
         buttonParse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String temp = dateTime.getText().toString();
-                if(temp.length() == 19){
+                if(temp.length() == 19 &&
+                        temp.substring(3,4) == "-" &&
+                        temp.substring(6,7) == "-" &&
+                        temp.substring(9,10) == "T" &&
+                        temp.substring(12,13) == ":" &&
+                        temp.substring(15,16) == ":"){
                     date = temp.substring(0, 4) + temp.substring(5, 7) + temp.substring(8, 10);
                     time = temp.substring(11, 13) + temp.substring(14, 16) + temp.substring(17, 19);
                     MainActivity.getWeatherDetails(getContext(), region, MainActivity.UrlGenerator(date, time), mTextViewResult);

@@ -210,7 +210,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                         JSONObject jsonObject = new JSONObject(response);
                         JSONArray jsonArray = jsonObject.getJSONArray("items");
 
-                            for (int i = 0;i < jsonArray.length(); i++) {
+                            for (int i = 0; i < jsonArray.length(); i++) {
                                 JSONObject airQuality = jsonArray.getJSONObject(i);
 
                                 JSONObject jsonObjectReadings = airQuality.getJSONObject("readings");
