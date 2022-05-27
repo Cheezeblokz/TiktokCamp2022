@@ -243,18 +243,19 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
                                 JSONObject jsonObjectReadings = airQuality.getJSONObject("readings");
                                 JSONObject jsonObjectpm25 = jsonObjectReadings.getJSONObject("pm25_one_hourly");
-//                                String national = jsonObjectpm25.getString("National"); //Doesn't appear in JSON data
+                                String updateTimestamp = airQuality.getString("update_timestamp");
                                 String north = jsonObjectpm25.getString("north");
                                 String south = jsonObjectpm25.getString("south");
                                 String east = jsonObjectpm25.getString("east");
                                 String west = jsonObjectpm25.getString("west");
                                 String central = jsonObjectpm25.getString("central");
 
-                                tvResult.append(north + ", " + "\n"
-                                        + south + ", " + "\n"
-                                        + east + ", " + "\n"
-                                        + west + ", " + "\n"
-                                        + central + "\n");
+                                tvResult.append("Update at " + updateTimestamp + "\n"
+                                        + "North: " + north + "\n"
+                                        + "South: " + south + "\n"
+                                        + "East: " + east + "\n"
+                                        + "West: " + west + "\n"
+                                        + "Central: " + central + "\n\n");
                             }
                     } catch (JSONException e) {
                         e.printStackTrace();
